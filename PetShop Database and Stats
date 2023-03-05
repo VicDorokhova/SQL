@@ -31,4 +31,4 @@ GROUP BY color;
 SELECT name, age 
 FROM PetShop 
 ORDER BY age DESC 
-LIMIT 5+
+LIMIT 5
