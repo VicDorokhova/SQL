@@ -1,0 +1,34 @@
+--Create a petshop database
+
+CREATE TABLE PetShop (id INTEGER PRIMARY KEY, name TEXT, species TEXT, color TEXT, age INTEGER, sex TEXT); 
+
+INSERT INTO Petshop VALUES (1, "Nuswar", 'cat', 'grey', 8, 'F'); 
+INSERT INTO Petshop VALUES (2, "Jasmine", 'cat', 'black', 6, 'F'); 
+INSERT INTO Petshop VALUES (3, "Cindy", 'dog', 'gold', 8, 'F'); 
+INSERT INTO Petshop VALUES (4, "Pawpinki", 'cat', 'grey', 1,'M');
+INSERT INTO Petshop VALUES (5, "Fonzie", 'cat', 'orange', 2, 'M');
+INSERT INTO Petshop VALUES (6, "Felix", 'cat', 'brown', 8, 'M');
+INSERT INTO Petshop VALUES (7, "Chicken", 'cat', 'black', 1, 'F');
+INSERT INTO Petshop VALUES (8, "Gizmo", 'dog', 'tan', 3, 'M');
+INSERT INTO Petshop VALUES (9, "Jordan", 'dog', 'black', 7, 'M'); 
+INSERT INTO Petshop VALUES (10, "Bailey", 'dog', 'orange', 1, 'F');
+INSERT INTO Petshop VALUES (11, "Tanner", 'dog', 'brown', 7, 'M');
+INSERT INTO Petshop VALUES (12, "Boo", 'cat', 'grey', 1, 'M');
+INSERT INTO Petshop VALUES (13, "Pricilla", 'cat', 'calico', 1, 'F');
+INSERT INTO Petshop VALUES (14, "Phil", 'cat', 'grey', 2, 'M');
+INSERT INTO Petshop VALUES (15, "Dixie", 'cat', 'calico', 4, 'F');
+
+--display database ordered by age
+SELECT * FROM PetShop 
+ORDER BY age ASC;
+
+--how many are there of each color?
+SELECT color, COUNT(*) 
+FROM PetShop 
+GROUP BY color;
+
+--who are our oldest 5?
+SELECT name, age 
+FROM PetShop 
+ORDER BY age DESC 
+LIMIT 5+
