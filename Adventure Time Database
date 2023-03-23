@@ -1,0 +1,63 @@
+/* Create table about Adventure Time characters*/
+CREATE TABLE Adventure_Time 
+(id INTEGER PRIMARY KEY,
+name TEXT,
+species TEXT,
+gender TEXT,
+occupation TEXT,
+voiced_by TEXT,
+friend_id INTEGER);
+
+INSERT INTO Adventure_time (name, species, gender, occupation, voiced_by, friend_id) 
+VALUES ('Finn', 'human', 'male', 'Hero', 'Jeremy_Shada', 2);
+INSERT INTO Adventure_time (name, species, gender, occupation, voiced_by, friend_id)
+VALUES ('Jake', 'dog/shape-shifter', 'male', 'Hero', 'John_DiMaggio', 1);
+INSERT INTO Adventure_time (name, species, gender, occupation, voiced_by, friend_id)
+VALUES ('Princess_Bubblegum', 'Candy', 'female', 'Ruler_of_Candy_Kingdom', 'Hynden_Walch', 8);
+INSERT INTO Adventure_time (name, species, gender, occupation, voiced_by, friend_id)
+VALUES ('Marceline', 'vampire/demon', 'female', 'Musician', 'Olivia_Olsen', 6);
+INSERT INTO Adventure_time (name, species, gender, occupation, voiced_by, friend_id)
+VALUES ('BMO', 'MO', 'agender', 'Video_Game_Console', 'Niki_Yang', 7);
+INSERT INTO Adventure_time (name, species, gender, occupation, voiced_by, friend_id)
+VALUES ('Ice_King', 'Ice_Wizard', 'male', 'Monarch_of_Ice_Kingdom', 'Tom_Kenny', 4);
+INSERT INTO Adventure_time (name, species, gender, occupation, voiced_by, friend_id)
+VALUES ('Lumpy_Space_Princess', 'Lump', 'female', 'Queen_of_Lumpy_Space', 'Pendleton_Ward', 5);
+INSERT INTO Adventure_time (name, species, gender, occupation, voiced_by, friend_id)
+VALUES ('Lady_Rainicorn', 'Rainicorn', 'female', 'Royal_Pet', 'Niki_Yang', 3);
+
+CREATE TABLE Age 
+(id INTEGER PRIMARY KEY,
+character_id INTEGER,
+biological_age INTEGER,
+actual_age INTEGER);
+
+INSERT INTO Age (character_id, biological_age, actual_age)
+VALUES (1, 17, 17);
+INSERT INTO Age (character_id, biological_age, actual_age)
+VALUES (2, 40, 17);
+INSERT INTO Age (character_id, biological_age, actual_age)
+VALUES (3, 19, 830);
+INSERT INTO Age (character_id, biological_age, actual_age)
+VALUES (4, null, 1003);
+INSERT INTO Age (character_id, biological_age, actual_age)
+VALUES (5, null, 1006);
+INSERT INTO Age (character_id, biological_age, actual_age)
+VALUES (6, 47, 1046);
+INSERT INTO Age (character_id, biological_age, actual_age)
+VALUES (7, 19, null);
+
+SELECT Adventure_Time.name, Age.biological_age, Age.actual_age 
+FROM Adventure_time 
+JOIN Age
+ON Adventure_Time.id= Age.character_id;
+
+SELECT Adventure_Time.name, Age.biological_age, Age.actual_age 
+FROM Adventure_time 
+LEFT OUTER JOIN Age
+ON Adventure_Time.id= Age.character_id;
+
+SELECT Adventure_Time.name, friend.name 
+FROM Adventure_Time
+JOIN Adventure_Time friend
+ON Adventure_Time.friend_id= friend.id;
+
