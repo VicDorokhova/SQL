@@ -1,0 +1,64 @@
+--Querying a spotify database from Kaggle
+
+--Data source: https://www.kaggle.com/datasets/equinxx/spotify-top-50-songs-in-2021?select=spotify_top50_2021.csv
+
+
+--What is the average energy rate for each artist?
+SELECT artist_name, AVG(energy) AS avg_energy
+FROM Spotifydata
+GROUP BY artist_name
+ORDER BY avg_energy DESC;
+
+--What's the average danceability for the 10 most popular songs?
+ SELECT (SELECT danceability FROM spotifydata ORDER BY danceability DESC LIMIT 10)/10 AS avg_danceability;
+
+--Calculate the average popularity for the artists in the Spotify data table. 
+--Then, for every artist with an average popularity of 90 or above, show their name, their average popularity, and label them as a “Top Star”.
+WITH tempTable AS
+(SELECT artist_name, AVG(popularity) AS popularity
+FROM spotifydata
+GROUP BY artist_name
+HAVING popularity>= 90)
+
+SELECT artist_name AS 'Top Star', popularity
+FROM tempTable
+ORDER BY popularity DESC;
+
+--More queries using Bike Lane Data 
+
+CREATE TABLE BIT_DB.CityBikeLanes (
+id integer primary key,
+year_installed year not null,
+year_updated year not null,
+street varchar not null,
+width_feet integer not null,
+safetyrating integer not null,
+protected varchar not null);
+
+--List all of the bike lanes that have an average safety rating of 4.0 or higher.
+--Show the average safety rating for each of those bike lanes, and label them "Safe Lane"
+WITH bikelane_safety AS
+(SELECT street, AVG(safetyrating) AS avg_safetyrating
+FROM CityBikeLanes
+GROUP BY street)
+SELECT 
+street,
+avg_safetyrating,
+'Safe Lane' AS 'label'
+FROM bikelane_safety
+WHERE avg_safetyrating>= 4;
+
+--List of all the bike lanes, both safety ratings for each lane given by the two technicians, the average safety rating for each lane,
+--with the recommendation as "Remove" for ratings under 2.5, "Leave As-Is" over 4, or "Improvements Needed" otherwise
+WITH avg_rating_table AS 
+(SELECT street, 
+safetyrating, 
+AVG(safetyrating) OVER(PARTITION BY street) AS avg_rating
+FROM CityBikeLanes)
+SELECT street, safetyrating, avg_rating, 
+CASE
+WHEN avg_rating>= 4 THEN 'Leave As-Is'
+WHEN avg_rating< 2.5 THEN 'Remove'
+ELSE 'Improvements Needed'
+END AS Recommendation
+FROM avg_rating_table
