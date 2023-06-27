@@ -1,0 +1,28 @@
+--Querying a database for a digital media store and includes tables for artists, albums, media tracks, invoices, and customers.
+
+--Show Customers (their full names, customer ID, and country) who are not in the US. (Hint: != or <> can be used to say "is not equal to").
+SELECT FirstName || ' ' || LastName, CustomerId, Country
+FROM chinook.customers
+WHERE Country<> 'USA';
+
+--Show only the Customers from Brazil.
+SELECT FirstName || ' ' || LastName, CustomerId, Country
+FROM chinook.customers cust
+WHERE Country= 'Brazil'
+
+--Find the Invoices of customers who are from Brazil. The resulting table should show the customer's full name, Invoice ID, Date of the invoice, and billing country.
+SELECT FirstName || ' ' || LastName, InvoiceId, InvoiceDate, BillingCountry
+FROM invoices
+JOIN customers
+ON invoices.CustomerId= customers.CustomerId
+WHERE BillingCountry= 'Brazil';
+
+
+--Show the Employees who are Sales Agents.
+SELECT EmployeeId, FirstName || ' ' || LastName, title
+FROM employees
+WHERE title= 'Sales Support Agent';
+
+--Find a unique/distinct list of billing countries from the Invoice table.
+SELECT DISTINCT BillingCountry
+FROM invoices;
