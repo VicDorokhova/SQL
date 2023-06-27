@@ -1,0 +1,104 @@
+--CREATE TABLE users 
+--(id INTEGER AUTO_INCREMENT PRIMARY KEY,
+--username VARCHAR(255) UNIQUE NOT NULL,
+--created_at TIMESTAMP DEFAULT NOW());
+
+--CREATE TABLE photos 
+--(id INTEGER AUTO_INCREMENT PRIMARY KEY,
+--image_url VARCHAR(255) NOT NULL,
+--user_id INTEGER NOT NULL,
+--created_at TIMESTAMP DEFAULT NOW(),
+--FOREIGN KEY(user_id) REFERENCES users(id));
+
+--CREATE TABLE comments 
+--(id INTEGER AUTO_INCREMENT PRIMARY KEY,
+--comment_text VARCHAR(255) NOT NULL,
+--photo_id INTEGER NOT NULL,
+--user_id INTEGER NOT NULL,
+--created_at TIMESTAMP DEFAULT NOW(),
+--FOREIGN KEY(photo_id) REFERENCES photos(id),
+--FOREIGN KEY(user_id) REFERENCES users(id));
+
+CREATE TABLE likes 
+--(user_id INTEGER NOT NULL,
+--photo_id INTEGER NOT NULL,
+--created_at TIMESTAMP DEFAULT NOW(),
+--FOREIGN KEY(user_id) REFERENCES users(id),
+--FOREIGN KEY(photo_id) REFERENCES photos(id),
+--PRIMARY KEY(user_id, photo_id));
+
+--CREATE TABLE follows 
+--(follower_id INTEGER NOT NULL,
+--followee_id INTEGER NOT NULL,
+--created_at TIMESTAMP DEFAULT NOW(),
+--FOREIGN KEY(follower_id) REFERENCES users(id),
+--FOREIGN KEY(followee_id) REFERENCES users(id),
+--PRIMARY KEY(follower_id, followee_id));
+
+--CREATE TABLE tags 
+--(id INTEGER AUTO_INCREMENT PRIMARY KEY,
+--tag_name VARCHAR(255) UNIQUE,
+--created_at TIMESTAMP DEFAULT NOW());
+
+CREATE TABLE photo_tags 
+--(photo_id INTEGER NOT NULL,
+--tag_id INTEGER NOT NULL,
+--FOREIGN KEY(photo_id) REFERENCES photos(id),
+--FOREIGN KEY(tag_id) REFERENCES tags(id),
+--PRIMARY KEY(photo_id, tag_id));
+
+-- --Find the 5 oldest users
+-- SELECT * FROM users
+-- ORDER BY created_at
+-- LIMIT 5;
+
+-- --Find what day of the week most people sign up
+-- SELECT 
+-- DAYNAME(created_at) AS signup_day,
+-- COUNT(*) AS signup_count
+-- FROM users
+-- GROUP BY signup_day
+-- ORDER BY signup_count DESC
+-- LIMIT 1;
+
+-- --Find the users that have not posted any photos
+-- SELECT username
+-- FROM users
+-- LEFT JOIN photos
+-- ON users.id = photos.user_id
+-- WHERE photos.id IS NULL;
+
+-- --Find the photo with the most likes and the user who posted it
+-- SELECT 
+-- username,
+-- photos.id AS photo_id, 
+-- COUNT(*) AS like_count, 
+-- photos.image_url
+-- FROM photos
+-- JOIN likes
+-- ON likes.photo_id= photos.id
+-- JOIN users
+-- ON photos.user_id= users.id
+-- GROUP BY photos.id
+-- ORDER BY like_count DESC
+-- LIMIT 1;
+
+-- --How many times dd the average user post?
+-- SELECT COUNT(*)/(SELECT COUNT(*) FROM users) AS average FROM photos;
+
+-- --What are the 5 most commonly used hashtags?
+-- SELECT tag_name, COUNT(*) AS tag_count 
+-- FROM photo_tags
+-- JOIN tags
+-- ON photo_tags.tag_id= tags.id
+-- GROUP BY tag_id
+-- ORDER BY tag_count DESC
+-- LIMIT 5;
+
+-- --Find the users who have liked every post on the site (bots)
+-- SELECT username, COUNT(*) AS like_count
+-- FROM users
+-- JOIN likes
+-- ON likes.user_id= users.id
+-- GROUP BY users.id
+-- HAVING like_count=(SELECT COUNT(*) FROM photos);
