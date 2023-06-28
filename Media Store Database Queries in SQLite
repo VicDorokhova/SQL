@@ -23,6 +23,53 @@ SELECT EmployeeId, FirstName || ' ' || LastName, title
 FROM employees
 WHERE title= 'Sales Support Agent';
 
---Find a unique/distinct list of billing countries from the Invoice table.
+--Find a unique list of billing countries from the Invoice table.
 SELECT DISTINCT BillingCountry
 FROM invoices;
+
+--Provide a query that shows the invoices associated with each sales agent. The resulting table should include the Sales Agent's full name.
+SELECT emp.FirstName || ' ' || emp.LastName, InvoiceId
+FROM chinook.employees emp
+JOIN chinook.customers cust
+ON emp.EmployeeId= cust.SupportRepId
+JOIN Invoices
+ON cust.customerid= invoices.CustomerId;
+
+--Show the Invoice Total, Customer name, Country, and Sales Agent name for all invoices and customers.
+SELECT Total, cust.FirstName, cust.LastName, cust.Country, emp.FirstName || ' ' || emp.LastName AS 'Sales Agent'
+FROM invoices
+JOIN customers cust
+ON cust.CustomerId= invoices.CustomerId
+JOIN Employees emp
+ON emp.EmployeeId= cust.SupportRepId;
+
+--How many Invoices were there in 2009?
+SELECT COUNT(*), InvoiceDate
+FROM invoices
+WHERE InvoiceDate LIKE '2009%';
+
+--What are the total sales for 2009?
+SELECT COUNT(Quantity), invoices.InvoiceDate
+FROM invoice_items
+JOIN invoices
+ON InvoiceLineId= invoices.InvoiceId
+WHERE InvoiceDate LIKE '2009%';
+
+--Write a query that includes the purchased track name with each invoice line ID.
+SELECT tracks.name, InvoiceLineId
+FROM invoice_items inv
+JOIN tracks
+ON inv.TrackId= tracks.TrackId;
+
+--Write a query that includes the purchased track name AND artist name with each invoice line ID.
+SELECT tracks.name, InvoiceLineId, artists.Name
+FROM invoice_items inv
+JOIN tracks
+ON inv.TrackId= tracks.TrackId
+JOIN albums
+ON albums.AlbumId= tracks.AlbumId
+JOIN artists
+ON artists.ArtistId= albums.ArtistId;
+
+
+
