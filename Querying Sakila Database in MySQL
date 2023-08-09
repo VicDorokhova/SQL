@@ -1,0 +1,62 @@
+--Which actors have the first name ‘Scarlett’?
+SELECT first_name, last_name 
+FROM actor
+WHERE first_name= 'Scarlett';
+
+-- Which actors have the last name ‘Johansson’
+SELECT first_name, last_name 
+FROM actor
+WHERE last_name= 'Johansson';
+
+-- How many distinct actors last names are there?
+SELECT COUNT(DISTINCT(last_name))
+FROM actor
+ORDER BY first_name, last_name;
+
+-- Which last names are not repeated?
+SELECT last_name, COUNT(last_name)
+FROM actor
+GROUP BY last_name
+HAVING COUNT(last_name)<2;
+
+-- Which last names appear more than once?
+SELECT last_name, COUNT(last_name)
+FROM actor 
+GROUP BY last_name
+HAVING COUNT(last_name)>1;
+
+-- Which actor has appeared in the most films?
+SELECT first_name, last_name, COUNT(film.title) AS film_count
+FROM actor
+JOIN film_actor
+ON actor.actor_id= film_actor.actor_id
+JOIN film
+ON film.film_id= film_actor.film_id
+GROUP BY actor.first_name, actor.last_name
+ORDER BY film_count DESC
+LIMIT 1;
+
+-- Is ‘Academy Dinosaur’ available for rent from Store 1?
+SELECT title, store.store_id
+FROM film
+JOIN inventory
+ON film.film_id= inventory.film_id
+JOIN store
+ON inventory.store_id= store.store_id
+WHERE film.title= 'Academy Dinosaur'
+AND store.store_id= 1;
+-- This query shows that their are 4 available copies of 'Academy Dinosaur'
+
+-- What is that average running time of all the films in the sakila DB?
+SELECT AVG(length) FROM film;
+
+-- What is the average running time of films by category?
+SELECT category.name AS category, AVG(length) 
+FROM film
+JOIN film_category
+ON film.film_id= film_category.film_id
+JOIN category
+ON category.category_id= film_category.category_id
+GROUP BY category;
+
+
